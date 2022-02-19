@@ -2,9 +2,14 @@ plugins {
     id 'java'
 }
 
-group 'uk.sky'
-version '0.0.1-SNAPSHOT'
+subprojects {
+    group 'uk.sky'
+    version '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
 
-repositories {
-    mavenCentral()
+    repositories {
+        mavenCentral()
+    }
+
+    apply plugin: 'java'
 }
