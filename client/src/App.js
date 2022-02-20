@@ -1,9 +1,13 @@
 import "./css/App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Navbar from "./components/Navbar";
+import DemoForm from "./components/DemoForm";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello World</h1>
+    <div className="app">
+      <Navbar />
+      <DemoForm />
     </div>
   );
 }
