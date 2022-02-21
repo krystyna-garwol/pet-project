@@ -5,6 +5,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { services } from "../data/endpoints";
+import { sendGetRequest } from "../utils/requests";
 
 const DemoForm = () => {
   const [input, setInput] = useState({
@@ -12,6 +13,7 @@ const DemoForm = () => {
     requestType: "GET",
     endpoint: "/private/status",
   });
+  const [response, setResponse] = useState();
 
   const getUrl = (service) => {
     return services[service].env + input.endpoint;
@@ -49,6 +51,7 @@ const DemoForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    sendGetRequest(getUrl(input.service), setResponse);
   };
 
   return (
@@ -110,7 +113,7 @@ const DemoForm = () => {
       </Form>
       <div className="response">
         <p>Response Body</p>
-        <div className="response-area"></div>
+        <div className="response-area">{response}</div>
       </div>
     </Container>
   );
