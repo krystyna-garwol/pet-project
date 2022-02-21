@@ -9,13 +9,33 @@ import { services } from "../data/endpoints";
 const DemoForm = () => {
   const [input, setInput] = useState({
     service: "purchase-service",
-    environment: "http://localhost:8081",
     requestType: "GET",
     endpoint: "/private/status",
   });
 
+  const getUrl = (service) => {
+    return services[service].env + input.endpoint;
+  };
+
   const handleChange = (event) => {
-    setInput({ ...input, [event.target.name]: event.target.value });
+    if (input.service === "purchase-service" && event.target.value === "POST") {
+      setInput({
+        ...input,
+        [event.target.name]: event.target.value,
+        endpoint: "/private/purchase",
+      });
+    } else if (
+      input.service === "purchase-service" &&
+      event.target.value === "GET"
+    ) {
+      setInput({
+        ...input,
+        [event.target.name]: event.target.value,
+        endpoint: "/private/status",
+      });
+    } else {
+      setInput({ ...input, [event.target.name]: event.target.value });
+    }
   };
 
   const handleServiceChange = (event) => {
@@ -23,6 +43,7 @@ const DemoForm = () => {
       ...input,
       [event.target.name]: event.target.value,
       requestType: "GET",
+      endpoint: "/private/status",
     });
   };
 
@@ -35,7 +56,7 @@ const DemoForm = () => {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-4">
           <Row>
-            <Col lg="3" md="6" className="mb-4">
+            <Col lg="4" md="6" className="mb-4">
               <Form.Label>Service</Form.Label>
               <Form.Select
                 onChange={handleServiceChange}
@@ -47,19 +68,7 @@ const DemoForm = () => {
                 })}
               </Form.Select>
             </Col>
-            <Col lg="3" md="6" className="mb-4">
-              <Form.Label>Environment</Form.Label>
-              <Form.Select
-                onChange={handleChange}
-                name="environment"
-                value={input.environment}
-              >
-                {Object.entries(services).map((service, index) => {
-                  return <option key={index}>{service[1].env}</option>;
-                })}
-              </Form.Select>
-            </Col>
-            <Col lg="3" md="6" className="mb-4">
+            <Col lg="4" md="6" className="mb-4">
               <Form.Label>Request Type</Form.Label>
               <Form.Select
                 onChange={handleChange}
@@ -73,7 +82,7 @@ const DemoForm = () => {
                 )}
               </Form.Select>
             </Col>
-            <Col lg="3" md="6">
+            <Col lg="4" md="6">
               <Form.Label>Endpoint</Form.Label>
               <Form.Select
                 onChange={handleChange}
