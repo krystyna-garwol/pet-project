@@ -1,4 +1,4 @@
-package uk.sky.purchaseservice.configuration;
+package uk.sky.purchaseservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
