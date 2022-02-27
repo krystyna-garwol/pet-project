@@ -1,15 +1,15 @@
 package uk.sky.purchaseservice.config;
 
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.net.http.HttpClient;
 
 @Configuration
 public class ClientConfig {
 
     @Bean
-    public HttpClient httpClient() {
-        return HttpClient.newHttpClient();
+    public CloseableHttpClient httpClient() {
+        return HttpClients.createDefault();
     }
 }

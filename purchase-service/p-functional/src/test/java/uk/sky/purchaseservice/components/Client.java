@@ -1,37 +1,50 @@
 package uk.sky.purchaseservice.components;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 @Component
 public class Client {
 
-    @Autowired
-    private HttpClient client;
+    private CloseableHttpClient client;
+    private Response response;
 
-    String host = "http://localhost:8081";
-
-    private HttpRequest createRequest(String method, String endpoint) {
-        if(method.equals("POST")) {
-            return HttpRequest.newBuilder()
-                    .POST(HttpRequest.BodyPublishers.noBody())
-                    .uri(URI.create(host + endpoint))
-                    .build();
-        }
-        return HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(host + endpoint))
-                .build();
+    public Client(CloseableHttpClient client, Response response) {
+        this.client = client;
+        this.response = response;
     }
 
-    public HttpResponse<String> sendRequest(String method, String endpoint) throws IOException, InterruptedException {
-        HttpRequest request = createRequest(method, endpoint);
-        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    private String host = "http://localhost:8081";
+
+    private void execute(HttpUriRequest request) {
+        try {
+            HttpResponse httpResponse = client.execute(request);
+
+            int statusCode = httpResponse.getStatusLine().getStatusCode();
+            response.setStatusCode(statusCode);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+            response.setResponseBody(reader.readLine());
+        } catch(Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    public void sendRequest(String method, String endpoint) {
+        URI uri = URI.create(host + "/" + endpoint);
+        switch(method) {
+            case "GET":
+                HttpGet httpGet = new HttpGet(uri);
+                execute(httpGet);
+                break;
+            default: throw new RuntimeException("Unrecognised HTTP Method");
+        }
     }
 }
