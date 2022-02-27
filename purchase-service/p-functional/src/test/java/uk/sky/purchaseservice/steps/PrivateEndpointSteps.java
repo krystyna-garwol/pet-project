@@ -8,6 +8,8 @@ import uk.sky.purchaseservice.components.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class PrivateEndpointSteps {
 

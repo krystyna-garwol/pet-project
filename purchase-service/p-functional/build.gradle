@@ -4,8 +4,8 @@ plugins {
 }
 
 dependencies {
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation project(":purchase-service:p-service")
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
     testImplementation 'io.cucumber:cucumber-spring:7.2.3'
