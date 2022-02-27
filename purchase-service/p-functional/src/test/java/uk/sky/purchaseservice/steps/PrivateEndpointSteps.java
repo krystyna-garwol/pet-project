@@ -6,7 +6,7 @@ import io.cucumber.java.en.When;
 import uk.sky.purchaseservice.components.Client;
 import uk.sky.purchaseservice.components.Response;
 
-import java.io.IOException;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +22,7 @@ public class PrivateEndpointSteps {
     }
 
     @When("{string} request is made to the {string} endpoint")
-    public void sendRequest(String method, String endpoint) throws IOException, InterruptedException {
+    public void sendRequest(String method, String endpoint)  {
       client.sendRequest(method, endpoint);
     }
 

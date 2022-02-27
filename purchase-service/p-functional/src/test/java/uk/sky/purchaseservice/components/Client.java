@@ -12,13 +12,13 @@ public class Client {
 
     private HttpClient client;
     private Response response;
+    private String host = "http://localhost:8081";
 
     public Client(HttpClient client, Response response) {
         this.client = client;
         this.response = response;
     }
 
-    private String host = "http://localhost:8081";
 
     private HttpRequest createRequest(String method, String endpoint) {
         URI uri = URI.create(host + "/" + endpoint);
