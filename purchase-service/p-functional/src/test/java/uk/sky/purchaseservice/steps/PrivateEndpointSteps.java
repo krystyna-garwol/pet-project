@@ -8,8 +8,6 @@ import uk.sky.purchaseservice.components.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 public class PrivateEndpointSteps {
 
@@ -33,7 +31,6 @@ public class PrivateEndpointSteps {
 
     @And("should return response body containing {string}")
     public void shouldReturnResponseBody(String responseBody) {
-        assertThat(response.getResponseBody()).isEqualTo(responseBody);
+        assertThat(response.getResponseBody().contains(responseBody)).isEqualTo(true);
     }
-
 }

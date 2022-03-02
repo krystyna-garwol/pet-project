@@ -1,4 +1,14 @@
 server:
   port: "8081"
-service:
-  host: "http://localhost:8081"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus"
+      base-path: "/private"
+      path-mapping:
+        prometheus: "metrics"
+  metrics:
+    export:
+      prometheus:
+        enabled: true
