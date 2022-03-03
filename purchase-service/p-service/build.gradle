@@ -8,6 +8,11 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
+processResources {
+    filesMatching('application.yml') {
+        expand(project.properties)
+    }
+}
 
 dependencies {
     //spring boot starter
@@ -23,4 +28,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+springBoot {
+    buildInfo {
+        properties {
+            time = null;
+        }
+    }
 }

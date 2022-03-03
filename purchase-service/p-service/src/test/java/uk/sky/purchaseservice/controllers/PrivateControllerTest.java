@@ -9,8 +9,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,5 +33,15 @@ public class PrivateControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("jvm_memory_committed_bytes")))
                 .andExpect(content().string(containsString("jvm_memory_used_bytes")));
+    }
+
+    @Test
+    public void whenInfoEndpointCalled_shouldReturnAppInfo() throws Exception {
+        mockMvc.perform(get("/private/info"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.app.name").value("Pet Project Purchase Service"))
+                .andExpect(jsonPath("$.app.java.source").value(11))
+                .andExpect(jsonPath("$.build.artifact").value("p-service"));
     }
 }

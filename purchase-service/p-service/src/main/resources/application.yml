@@ -4,7 +4,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "prometheus"
+        include: "prometheus, info"
       base-path: "/private"
       path-mapping:
         prometheus: "metrics"
@@ -12,3 +12,13 @@ management:
     export:
       prometheus:
         enabled: true
+  info:
+    env:
+      enabled: true
+info:
+  app:
+    name: "Pet Project Purchase Service"
+    description: "Purchase Service Microservice that communicates with Order Service and Inventory Service"
+    java:
+      source: ${sourceCompatibility}
+      target: ${sourceCompatibility}
