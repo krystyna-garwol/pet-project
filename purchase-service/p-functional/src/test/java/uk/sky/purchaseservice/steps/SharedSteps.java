@@ -6,6 +6,8 @@ import io.cucumber.java.en.When;
 import uk.sky.purchaseservice.components.Client;
 import uk.sky.purchaseservice.components.Response;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -20,8 +22,13 @@ public class SharedSteps {
     }
 
     @When("{string} request is made to the {string} endpoint")
-    public void sendRequest(String method, String endpoint)  {
-      client.sendRequest(method, endpoint);
+    public void sendRequest(String method, String endpoint) throws IOException, InterruptedException {
+      client.sendRequest(method, endpoint, null);
+    }
+
+    @When("{string} request is made to the {string} endpoint with body {string}")
+    public void sendRequest(String method, String endpoint, String body) throws IOException, InterruptedException {
+        client.sendRequest(method, endpoint, body);
     }
 
     @Then("should return a status code of {int}")

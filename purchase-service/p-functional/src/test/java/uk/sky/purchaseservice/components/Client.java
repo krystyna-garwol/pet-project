@@ -2,6 +2,7 @@ package uk.sky.purchaseservice.components;
 
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -19,29 +20,34 @@ public class Client {
         this.response = response;
     }
 
-
-    private HttpRequest createRequest(String method, String endpoint) {
+    private HttpRequest createGetRequest(String endpoint) {
         URI uri = URI.create(host + "/" + endpoint);
-        if(method.equals("POST")) {
-            return HttpRequest.newBuilder()
-                    .POST(HttpRequest.BodyPublishers.noBody())
-                    .uri(uri)
-                    .build();
-        }
         return HttpRequest.newBuilder()
                 .GET()
                 .uri(uri)
                 .build();
     }
 
-    public Response sendRequest(String method, String endpoint) {
-        HttpRequest request = createRequest(method, endpoint);
-        Response httpResponse = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(res -> {
-                    response.setStatusCode(res.statusCode());
-                    response.setResponseBody(res.body());
-                    return response;
-                }).join();
-        return httpResponse;
+    private HttpRequest createPostRequest(String endpoint, String body) {
+        URI uri = URI.create(host + "/" + endpoint);
+        return HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .headers("Content-Type", "application/json")
+                .uri(uri)
+                .build();
+    }
+
+    public Response sendRequest(String method, String endpoint, String body) throws IOException, InterruptedException {
+        HttpRequest request;
+        if(method.equals("POST")) {
+            request = createPostRequest(endpoint, body);
+        } else {
+            request = createGetRequest(endpoint);
+        }
+
+        HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        response.setResponseBody(httpResponse.body());
+        response.setStatusCode(httpResponse.statusCode());
+        return response;
     }
 }
