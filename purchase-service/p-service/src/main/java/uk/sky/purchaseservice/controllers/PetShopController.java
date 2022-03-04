@@ -2,7 +2,7 @@ package uk.sky.purchaseservice.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uk.sky.purchaseservice.BasketItem;
+import uk.sky.purchaseservice.models.BasketItem;
 
 import java.util.HashMap;
 import java.util.List;

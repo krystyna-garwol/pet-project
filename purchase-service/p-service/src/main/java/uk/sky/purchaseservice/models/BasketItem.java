@@ -1,4 +1,4 @@
-package uk.sky.purchaseservice;
+package uk.sky.purchaseservice.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
