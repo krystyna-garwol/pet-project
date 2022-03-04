@@ -9,12 +9,12 @@ import uk.sky.purchaseservice.components.Response;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class PrivateEndpointSteps {
+public class SharedSteps {
 
     private Client client;
     private Response response;
 
-    public PrivateEndpointSteps(Client client, Response response) {
+    public SharedSteps(Client client, Response response) {
         this.client = client;
         this.response = response;
     }
