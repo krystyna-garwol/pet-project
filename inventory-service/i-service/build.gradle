@@ -10,10 +10,14 @@ configurations {
 }
 
 dependencies {
+    //spring boot starter
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //cassandra
+    implementation 'org.springframework.data:spring-data-cassandra:3.3.2'
 }
 
 tasks.named('test') {
