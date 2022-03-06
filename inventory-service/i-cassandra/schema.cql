@@ -8,3 +8,7 @@ CREATE TABLE IF NOT EXISTS inventory.stock_item (
     type text,
     PRIMARY KEY (name, animal)
 );
+
+INSERT INTO inventory.stock_item (name, animal, inStock, price, type)VALUES('Purina', 'cat', 50, 5.50, 'food');
+INSERT INTO inventory.stock_item (name, animal, inStock, price, type)VALUES('Whiskas', 'cat', 30, 3.50, 'food');
+INSERT INTO inventory.stock_item (name, animal, inStock, price, type)VALUES('Pedigree', 'dog', 40, 4.99, 'food');
