@@ -1,4 +1,4 @@
 package uk.sky.inventoryservice.controllers;
 
-public class StockController {
+public class ProductController {
 }

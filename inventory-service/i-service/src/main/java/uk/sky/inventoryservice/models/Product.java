@@ -7,19 +7,22 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-@Table("stock_item")
+@Table("product")
 @AllArgsConstructor
 @Getter
-public class StockItem {
+public class Product {
 
-    @PrimaryKeyColumn(name = "name", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKeyColumn(name = "productId", ordinal = 0, type = PrimaryKeyType.PARTITIONED)
+    private String productId;
+
+    @Column
     private String name;
 
-    @PrimaryKeyColumn(name = "animal", ordinal = 1, type = PrimaryKeyType.PARTITIONED)
+    @Column
     private String animal;
 
     @Column
-    private int inStock;
+    private int stock;
 
     @Column
     private double price;
