@@ -2,12 +2,14 @@ package uk.sky.purchaseservice.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-public class BasketItem {
+public class Product {
 
-    private String name;
-    private String animal;
+    private String productId;
+    private int basket;
 
 }

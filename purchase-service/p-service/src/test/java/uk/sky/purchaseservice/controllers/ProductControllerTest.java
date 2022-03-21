@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import uk.sky.purchaseservice.models.BasketItem;
+import uk.sky.purchaseservice.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PetShopControllerTest {
+public class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -30,8 +30,8 @@ public class PetShopControllerTest {
     @Autowired
     private ObjectMapper mapper;
 
-    private List<BasketItem> basketItems = new ArrayList<>();
-    private BasketItem basketItem = new BasketItem("Purina", "cat");
+    private List<Product> basketItems = new ArrayList<>();
+    private Product basketItem = new Product("1234");
 
     @BeforeAll
     public void beforeAll() {
