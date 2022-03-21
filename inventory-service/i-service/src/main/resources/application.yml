@@ -4,5 +4,5 @@ spring:
   data:
     cassandra:
       keyspace-name: "inventory"
-      contact-points: "localhost"
+      contact-points: "127.0.0.1"
       port: "9042"

@@ -1,4 +1,4 @@
-FROM cassandra:3.0.20
+FROM cassandra:3.11.11
 COPY entrypoint-wrap.sh /entrypoint-wrap.sh
 COPY schema.cql /schema.cql
 RUN ["chmod", "+x", "entrypoint-wrap.sh"]

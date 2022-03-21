@@ -10,4 +10,7 @@ do
   wait_for_cassandra
 done &
 
-exec "$@"
+exec /docker-entrypoint.sh "$@"
+
+#when using cassandra version above 4 in dockerfile, use this to find docker-entrypoint file
+#exec /usr/local/bin/docker-entrypoint.sh "$@"
