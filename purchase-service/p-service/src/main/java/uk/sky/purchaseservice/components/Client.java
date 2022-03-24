@@ -25,8 +25,8 @@ public class Client {
                 .build();
     }
 
-    public HttpResponse sendGetRequest(String endpoint) {
-        HttpResponse response = null;
+    public HttpResponse<String> sendGetRequest(String endpoint) {
+        HttpResponse<String> response = null;
         try {
             HttpRequest request = createGetRequest(endpoint);
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

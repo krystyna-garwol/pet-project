@@ -1,50 +1,40 @@
 package uk.sky.purchaseservice.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.sky.purchaseservice.models.Product;
+import uk.sky.purchaseservice.services.ProductService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class ProductControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @Mock
+    private ProductService productService;
 
-    @Autowired
-    private ObjectMapper mapper;
+    @InjectMocks
+    private ProductController productController;
 
-    private List<Product> basketItems = new ArrayList<>();
-    private Product basketItem = new Product("1234");
-
-    @BeforeAll
-    public void beforeAll() {
-        basketItems.add(basketItem);
-    }
+    private Product product = new Product("1234", 2);
 
     @Test
     public void whenCheckStockEndpointCalled_shouldReturnAppropriateResponse() throws Exception {
-        mockMvc.perform(post("/pet/shop/basket/stock")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(basketItems)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Item in stock"));
+        int stockDiff = 5;
+
+        when(productService.checkStock(any())).thenReturn(stockDiff);
+        ResponseEntity<Map<String, Integer>> response = productController.checkStock(product);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).extracting("currentStock").isEqualTo(stockDiff);
     }
 }

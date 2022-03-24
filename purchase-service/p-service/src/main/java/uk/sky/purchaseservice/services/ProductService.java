@@ -5,6 +5,7 @@ import uk.sky.purchaseservice.components.Client;
 import uk.sky.purchaseservice.exceptions.StockException;
 import uk.sky.purchaseservice.models.Product;
 
+import java.net.http.HttpResponse;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +30,8 @@ public class ProductService {
 
     private int callInventoryService(String productId) {
         int stock = 0;
-        String body = client.sendGetRequest("inventory/stock/" + productId).body().toString();
+        HttpResponse<String> httpResponse = client.sendGetRequest("inventory/stock/" + productId);
+        String body = httpResponse.body();
         Pattern pattern = Pattern.compile("[0-9]+");
         Matcher matcher = pattern.matcher(body);
         if(matcher.find()) stock = Integer.parseInt(matcher.group(0));

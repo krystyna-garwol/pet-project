@@ -1,47 +1,25 @@
 package uk.sky.purchaseservice.controllers;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 public class PrivateControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @InjectMocks
+    private PrivateController privateController;
 
     @Test
     public void whenGetStatusCalled_shouldReturnAppropriateResponse() throws Exception {
-        mockMvc.perform(get("/private/status"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string("ok"));
-    }
+        ResponseEntity<String> response = privateController.getStatus();
 
-    @Test
-    public void whenMetricsEndpointCalled_shouldReturnMetrics() throws Exception {
-        mockMvc.perform(get("/private/metrics"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("jvm_memory_committed_bytes")))
-                .andExpect(content().string(containsString("jvm_memory_used_bytes")));
-    }
-
-    @Test
-    public void whenInfoEndpointCalled_shouldReturnAppInfo() throws Exception {
-        mockMvc.perform(get("/private/info"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.app.name").value("Pet Project Purchase Service"))
-                .andExpect(jsonPath("$.app.java.source").value(11))
-                .andExpect(jsonPath("$.build.artifact").value("p-service"));
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo("ok");
     }
 }
