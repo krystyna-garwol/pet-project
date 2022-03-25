@@ -23,17 +23,18 @@ public class ApplicationLatencyFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String status = String.valueOf(response.getStatus());
-        String resourceName = request.getMethod() + "-" + request.getRequestURI();
+            String resourceName = request.getMethod() + "-" + request.getRequestURI();
+            Histogram.Timer requestTimer;
 
-        if(!request.getRequestURI().equals("/private/metrics")) {
-            Histogram.Timer requestTimer = metrics.applicationLatencyMetrics()
-                    .labels(resourceName, String.valueOf(response.getStatus()))
-                    .startTimer();
-
-            requestTimer.observeDuration();
-        }
-
-        filterChain.doFilter(request, response);
+            try {
+                filterChain.doFilter(request, response);
+            } finally {
+                if(!request.getRequestURI().equals("/private/metrics")) {
+                    requestTimer = metrics.applicationLatencyMetrics()
+                            .labels(resourceName, String.valueOf(response.getStatus()))
+                            .startTimer();
+                    requestTimer.observeDuration();
+                }
+            }
     }
 }
