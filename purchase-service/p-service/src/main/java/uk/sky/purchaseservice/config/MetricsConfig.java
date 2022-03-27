@@ -8,14 +8,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MetricsConfig {
 
-    private CollectorRegistry collectorRegistry;
-
-    public MetricsConfig(CollectorRegistry collectorRegistry) {
-        this.collectorRegistry = collectorRegistry;
+    @Bean
+    public CollectorRegistry collectorRegistry() {
+        return new CollectorRegistry();
     }
 
     @Bean
-    public Histogram applicationLatencyMetrics() {
+    public Histogram applicationLatencyMetrics(CollectorRegistry collectorRegistry) {
         return Histogram.build()
                 .name("application_latency_seconds")
                 .help("Application latency in seconds")
