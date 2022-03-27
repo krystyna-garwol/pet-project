@@ -3,7 +3,6 @@ package uk.sky.purchaseservice.filters;
 import io.prometheus.client.Histogram;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uk.sky.purchaseservice.config.MetricsConfig;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,25 +13,25 @@ import java.io.IOException;
 @Component
 public class ApplicationLatencyFilter extends OncePerRequestFilter {
 
-    private MetricsConfig metrics;
+    private Histogram histogram;
 
-    public ApplicationLatencyFilter(MetricsConfig metrics) {
-        this.metrics = metrics;
+    public ApplicationLatencyFilter(Histogram histogram) {
+        this.histogram = histogram;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-            String resourceName = request.getMethod() + "-" + request.getRequestURI();
-            Histogram.Timer requestTimer;
-
             try {
                 filterChain.doFilter(request, response);
             } finally {
                 if(!request.getRequestURI().equals("/private/metrics")) {
-                    requestTimer = metrics.applicationLatencyMetrics()
+                    String resourceName = request.getMethod() + "-" + request.getRequestURI();
+
+                    Histogram.Timer requestTimer = histogram
                             .labels(resourceName, String.valueOf(response.getStatus()))
                             .startTimer();
+
                     requestTimer.observeDuration();
                 }
             }

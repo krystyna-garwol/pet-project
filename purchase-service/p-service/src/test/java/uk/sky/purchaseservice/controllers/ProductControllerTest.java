@@ -28,7 +28,7 @@ public class ProductControllerTest {
     private Product product = new Product("1234", 2);
 
     @Test
-    public void whenCheckStockEndpointCalled_shouldReturnAppropriateResponse() throws Exception {
+    public void whenCheckStockEndpointCalled_shouldReturnAppropriateResponse() {
         int stockDiff = 5;
 
         when(productService.checkStock(any())).thenReturn(stockDiff);

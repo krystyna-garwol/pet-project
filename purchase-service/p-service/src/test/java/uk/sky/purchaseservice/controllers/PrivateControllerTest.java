@@ -16,7 +16,7 @@ public class PrivateControllerTest {
     private PrivateController privateController;
 
     @Test
-    public void whenGetStatusCalled_shouldReturnAppropriateResponse() throws Exception {
+    public void whenGetStatusCalled_shouldReturnAppropriateResponse() {
         ResponseEntity<String> response = privateController.getStatus();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
