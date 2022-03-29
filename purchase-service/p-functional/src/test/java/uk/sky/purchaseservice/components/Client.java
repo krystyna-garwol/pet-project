@@ -2,7 +2,6 @@ package uk.sky.purchaseservice.components;
 
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -37,15 +36,21 @@ public class Client {
                 .build();
     }
 
-    public Response sendRequest(String method, String endpoint, String body) throws IOException, InterruptedException {
+    public Response sendRequest(String method, String endpoint, String body) {
         HttpRequest request;
+        HttpResponse<String> httpResponse = null;
         if(method.equals("POST")) {
             request = createPostRequest(endpoint, body);
         } else {
             request = createGetRequest(endpoint);
         }
 
-        HttpResponse<String> httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        try {
+            httpResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         response.setResponseBody(httpResponse.body());
         response.setStatusCode(httpResponse.statusCode());
         return response;

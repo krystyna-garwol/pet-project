@@ -1,13 +1,12 @@
 Feature: Application Latency metrics
 
-  Scenario Outline: application latency metrics are created for all private endpoints
-    When "GET" request is made to the "<endpoints>" endpoint
-    Then should return a status code of 200
-    When "GET" request is made to the "private/metrics" endpoint
-    Then should return response body containing "application_latency_seconds_count{resourceName=\"GET-/<endpoints>\",status=\"200\",} 1.0"
+  Scenario Outline: application latency metrics are created for all endpoints
+    Given "<metricsName>" with "<resourceName>" and "<status>" has value of 0.0
+    When "GET" request is made to the "<endpoint>" endpoint
+    Then should increase "<metricsName>" with "<resourceName>" and "<status>" by 1.0
 
     Examples:
-    | endpoints      |
-    | private/status |
-    | private/info   |
+      | endpoint       | metricsName                       | resourceName        | status |
+      | private/status | application_latency_seconds_count | GET-/private/status | 200    |
+      | private/info   | application_latency_seconds_count | GET-/private/info   | 200    |
 
