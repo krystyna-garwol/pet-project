@@ -17,7 +17,7 @@ public class Client {
         this.client = client;
     }
 
-    private HttpRequest createGetRequest(String endpoint) {
+    private HttpRequest createGetRequest(String host, String endpoint) {
         URI uri = URI.create(host + "/" + endpoint);
         return HttpRequest.newBuilder()
                 .GET()
@@ -25,15 +25,14 @@ public class Client {
                 .build();
     }
 
-    public HttpResponse<String> sendGetRequest(String endpoint) {
+    public HttpResponse<String> sendGetRequest(String host, String endpoint) {
         HttpResponse<String> response = null;
         try {
-            HttpRequest request = createGetRequest(endpoint);
+            HttpRequest request = createGetRequest(host, endpoint);
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch(Exception e) {
             e.printStackTrace();
         }
         return response;
     }
-
 }

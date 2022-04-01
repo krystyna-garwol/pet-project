@@ -2,6 +2,7 @@ package uk.sky.purchaseservice.services;
 
 import org.springframework.stereotype.Service;
 import uk.sky.purchaseservice.components.Client;
+import uk.sky.purchaseservice.components.DownstreamList;
 import uk.sky.purchaseservice.exceptions.StockException;
 import uk.sky.purchaseservice.models.Product;
 
@@ -13,9 +14,11 @@ import java.util.regex.Pattern;
 public class ProductService {
 
     private Client client;
+    private DownstreamList downstreamList;
 
-    public ProductService(Client client) {
+    public ProductService(Client client, DownstreamList downstreamList) {
         this.client = client;
+        this.downstreamList = downstreamList;
     }
 
     public int checkStock(Product product) {
@@ -29,9 +32,12 @@ public class ProductService {
     }
 
     private int callInventoryService(String productId) {
+        String inventoryHost = downstreamList.getUrls().get(0).getUrl();
         int stock = 0;
-        HttpResponse<String> httpResponse = client.sendGetRequest("inventory/stock/" + productId);
+
+        HttpResponse<String> httpResponse = client.sendGetRequest(inventoryHost, "inventory/stock/" + productId);
         String body = httpResponse.body();
+
         Pattern pattern = Pattern.compile("[0-9]+");
         Matcher matcher = pattern.matcher(body);
         if(matcher.find()) stock = Integer.parseInt(matcher.group(0));

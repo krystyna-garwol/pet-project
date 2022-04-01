@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.sky.purchaseservice.components.Client;
+import uk.sky.purchaseservice.components.DownstreamList;
 import uk.sky.purchaseservice.models.Product;
 
 import java.net.http.HttpResponse;
@@ -21,6 +22,9 @@ public class ProductServiceTest {
     @Mock
     private Client client;
 
+    @Mock
+    private DownstreamList downstreamList;
+
     @InjectMocks
     private ProductService productService;
 
@@ -31,7 +35,7 @@ public class ProductServiceTest {
         Product product = new Product("1234", 2);
         HttpResponse httpResponse = mock(HttpResponse.class);
 
-        when(client.sendGetRequest(anyString())).thenReturn(httpResponse);
+        when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
         when(httpResponse.body()).thenReturn(body);
         int retrievedStock = productService.checkStock(product);
 

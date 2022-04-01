@@ -1,5 +1,11 @@
 server:
   port: "8081"
+downstreams:
+  urls:
+    -
+      url: "http://localhost:8083"
+    -
+      url: "http://localhost:8082"
 management:
   endpoints:
     web:
