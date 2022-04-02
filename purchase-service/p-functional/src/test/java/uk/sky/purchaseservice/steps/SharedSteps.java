@@ -19,14 +19,16 @@ public class SharedSteps {
         this.response = response;
     }
 
+    private String host = "http://localhost:8081";
+
     @When("{string} request is made to the {string} endpoint")
     public void sendRequest(String method, String endpoint) {
-      client.sendRequest(method, endpoint, null);
+      client.sendRequest(method, host, endpoint, null);
     }
 
     @When("{string} request is made to the {string} endpoint with body {string}")
     public void sendRequest(String method, String endpoint, String body) {
-        client.sendRequest(method, endpoint, body);
+        client.sendRequest(method, host, endpoint, body);
     }
 
     @Then("should return a status code of {int}")

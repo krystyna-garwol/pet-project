@@ -12,14 +12,13 @@ public class Client {
 
     private HttpClient client;
     private Response response;
-    private String host = "http://localhost:8081";
 
     public Client(HttpClient client, Response response) {
         this.client = client;
         this.response = response;
     }
 
-    private HttpRequest createGetRequest(String endpoint) {
+    private HttpRequest createGetRequest(String host, String endpoint) {
         URI uri = URI.create(host + "/" + endpoint);
         return HttpRequest.newBuilder()
                 .GET()
@@ -27,22 +26,22 @@ public class Client {
                 .build();
     }
 
-    private HttpRequest createPostRequest(String endpoint, String body) {
+    private HttpRequest createPostOrPutRequest(String method, String host, String endpoint, String body) {
         URI uri = URI.create(host + "/" + endpoint);
         return HttpRequest.newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .method(method, HttpRequest.BodyPublishers.ofString(body))
                 .headers("Content-Type", "application/json")
                 .uri(uri)
                 .build();
     }
 
-    public Response sendRequest(String method, String endpoint, String body) {
+    public Response sendRequest(String method, String host, String endpoint, String body) {
         HttpRequest request;
         HttpResponse<String> httpResponse = null;
-        if(method.equals("POST")) {
-            request = createPostRequest(endpoint, body);
+        if(method.equals("POST") || method.equals("PUT")) {
+            request = createPostOrPutRequest(method, host, endpoint, body);
         } else {
-            request = createGetRequest(endpoint);
+            request = createGetRequest(host, endpoint);
         }
 
         try {
