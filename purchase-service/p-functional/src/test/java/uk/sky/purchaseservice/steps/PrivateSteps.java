@@ -1,6 +1,5 @@
 package uk.sky.purchaseservice.steps;
 
-import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,10 +20,6 @@ public class PrivateSteps {
     private String inventoryId = "bed3be78-ad5a-4b4a-aa81-38b2661ccda9";
     private String orderId = "5b8242be-7e44-48e1-b00e-210fafeb72bb";
 
-    @After
-    public void resetMappings() {
-        client.sendRequest("POST", host, "/__admin/mappings/reset", null);
-    }
 
     @Given("{string} downstream returns a status code of {int}")
     public void checkDownstreamStatus(String downstream, int status) throws JSONException {
