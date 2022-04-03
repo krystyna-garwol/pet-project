@@ -35,10 +35,21 @@ public class Client {
                 .build();
     }
 
+    private HttpRequest createEmptyPostRequest(String host, String endpoint) {
+        URI uri = URI.create(host + "/" + endpoint);
+        System.out.println(uri);
+        return HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.noBody())
+                .uri(uri)
+                .build();
+    }
+
     public Response sendRequest(String method, String host, String endpoint, String body) {
         HttpRequest request;
         HttpResponse<String> httpResponse = null;
-        if(method.equals("POST") || method.equals("PUT")) {
+        if(endpoint.equals("__admin/mappings/reset")) {
+            request = createEmptyPostRequest(host, endpoint);
+        } else if(method.equals("POST") || method.equals("PUT")) {
             request = createPostOrPutRequest(method, host, endpoint, body);
         } else {
             request = createGetRequest(host, endpoint);
