@@ -18,6 +18,7 @@ Feature: Private Endpoints
     And should return response body containing "11"
     And should return response body containing "p-service"
 
+  @WiremockCleanup
   Scenario Outline: healthcheck endpoint returns appropriate response based on downstream status
     Given "<downstream1>" downstream returns a status code of <status1>
     And "<downstream2>" downstream returns a status code of <status2>

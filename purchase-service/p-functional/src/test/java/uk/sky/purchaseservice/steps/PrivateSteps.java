@@ -21,7 +21,7 @@ public class PrivateSteps {
     private String inventoryId = "bed3be78-ad5a-4b4a-aa81-38b2661ccda9";
     private String orderId = "5b8242be-7e44-48e1-b00e-210fafeb72bb";
 
-    @After
+    @After("@WiremockCleanup")
     public void resetMappings() {
         client.sendRequest("POST", host, "__admin/mappings/reset", null);
     }
