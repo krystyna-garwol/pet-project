@@ -1,0 +1,17 @@
+{
+  "mappings": [
+    {
+      "id": "8c283613-206a-401b-a4bf-cbc47692594a",
+      "request": {
+        "method": "GET",
+        "url": "/inventory/stock/3"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "stock": 40
+        }
+      }
+    }
+  ]
+}

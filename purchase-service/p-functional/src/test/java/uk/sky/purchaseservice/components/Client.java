@@ -35,9 +35,21 @@ public class Client {
                 .build();
     }
 
+    private HttpRequest createEmptyPostRequest(String method, String host, String endpoint) {
+        URI uri = URI.create(host + "/" + endpoint);
+        return HttpRequest.newBuilder()
+                .method(method, HttpRequest.BodyPublishers.ofString(body))
+                .headers("Content-Type", "application/json")
+                .uri(uri)
+                .build();
+    }
+
     public Response sendRequest(String method, String host, String endpoint, String body) {
         HttpRequest request;
         HttpResponse<String> httpResponse = null;
+        if(method.equals("POST") && endpoint.equals("/__admin/mappings/reset")) {
+
+        }
         if(method.equals("POST") || method.equals("PUT")) {
             request = createPostOrPutRequest(method, host, endpoint, body);
         } else {

@@ -27,15 +27,16 @@ public class ProductService {
 
         if(stockDiff > 0 || product.getBasket() == retrievedStock) {
             return stockDiff;
+        } else {
+            throw new StockException(retrievedStock);
         }
-        throw new StockException(retrievedStock);
     }
 
     private int callInventoryService(String productId) {
         String inventoryHost = downstreamList.getUrls().get(0).getUrl();
         int stock = 0;
 
-        HttpResponse<String> httpResponse = client.sendGetRequest(inventoryHost, "inventory/stock/" + productId);
+        HttpResponse<String> httpResponse = client.sendGetRequest(inventoryHost, "stock/" + productId);
         String body = httpResponse.body();
 
         Pattern pattern = Pattern.compile("[0-9]+");
