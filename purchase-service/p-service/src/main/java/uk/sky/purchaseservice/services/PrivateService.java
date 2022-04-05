@@ -27,9 +27,9 @@ public class PrivateService {
         String statusToReturn = "";
 
         downstreamList.getUrls().forEach(downstream-> {
-            HttpResponse httpResponse = client.sendGetRequest(downstream.getUrl(), "private/status");
+            HttpResponse<String> httpResponse = client.sendGetRequest(downstream.getUrl(), "private/status");
             String status = String.valueOf(httpResponse.statusCode()).equals("200") ? HealthStatus.UP.name() : HealthStatus.DOWN.name();
-            components.put(downstream.getUrl().split("/")[3], status);
+            components.put(downstream.getName(), status);
         });
 
         for (String value : components.values()) {

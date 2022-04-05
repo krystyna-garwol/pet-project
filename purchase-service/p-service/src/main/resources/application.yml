@@ -3,8 +3,10 @@ server:
 downstreams:
   urls:
     -
+      name: "inventory"
       url: "http://localhost:8083"
     -
+      name: "order"
       url: "http://localhost:8082"
 management:
   endpoints:

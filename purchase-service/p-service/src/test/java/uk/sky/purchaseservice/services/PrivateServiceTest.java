@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import uk.sky.purchaseservice.components.Client;
-import uk.sky.purchaseservice.models.Product;
 
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -18,25 +19,27 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class ProductServiceTest {
+public class PrivateServiceTest {
 
     @MockBean
     private Client client;
 
     @Autowired
-    private ProductService productService;
+    private PrivateService privateService;
 
     @Test
-    public void whenCheckStockCalled_shouldReturnStockLevel() {
-        int stock = 18;
-        String body = "{\"stock\":20}";
-        Product product = new Product("1234", 2);
+    public void whenGetDownstreamsStatus_shouldReturnAppropriateResponse() {
         HttpResponse httpResponse = mock(HttpResponse.class);
+        Map<String, String> components = new HashMap<>();
+        components.put("inventory", "DOWN");
+        components.put("order", "DOWN");
+        Map<String, Object> toReturn = new HashMap<>();
+        toReturn.put("components", components);
+        toReturn.put("status", "DOWN");
 
         when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
-        when(httpResponse.body()).thenReturn(body);
-        int retrievedStock = productService.checkStock(product);
+        Map<String, Object> retrievedReturn = privateService.getDownstreamsStatus();
 
-        assertThat(stock).isEqualTo(retrievedStock);
+        assertThat(toReturn).isEqualTo(retrievedReturn);
     }
 }

@@ -1,6 +1,8 @@
 downstreams:
   urls:
     -
+      name: "inventory"
       url: "http://localhost:9000/inventory"
     -
+      name: "order"
       url: "http://localhost:9000/order"

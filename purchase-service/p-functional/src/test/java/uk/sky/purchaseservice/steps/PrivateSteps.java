@@ -3,7 +3,6 @@ package uk.sky.purchaseservice.steps;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import org.json.JSONException;
-import org.json.JSONObject;
 import uk.sky.purchaseservice.components.Client;
 import uk.sky.purchaseservice.components.Response;
 
@@ -28,12 +27,11 @@ public class PrivateSteps {
 
 
     @Given("{string} downstream returns a status code of {int}")
-    public void checkDownstreamStatus(String downstream, int status) throws JSONException {
+    public void checkDownstreamStatus(String downstream, int status) {
         if(status == 200) {
             client.sendRequest("GET", host, downstream + "/private/status", null);
         } else {
             String requestBody = "{\"request\": {\"method\": \"GET\"},\"response\": {\"status\": " + status + "}}";
-            JSONObject json = new JSONObject(requestBody);
             String id = downstream.equals("inventory") ? inventoryId : orderId;
             client.sendRequest("PUT", host, "__admin/mappings/" + id, requestBody);
         }
