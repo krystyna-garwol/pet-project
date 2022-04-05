@@ -9,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import uk.sky.purchaseservice.components.Client;
 
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,18 +27,24 @@ public class PrivateServiceTest {
     private PrivateService privateService;
 
     @Test
-    public void whenGetDownstreamsStatus_shouldReturnAppropriateResponse() {
+    public void whenGetDownstreamsStatusCalledWith200DownstreamResponse_shouldReturnUPStatus() {
         HttpResponse httpResponse = mock(HttpResponse.class);
-        Map<String, String> components = new HashMap<>();
-        components.put("inventory", "DOWN");
-        components.put("order", "DOWN");
-        Map<String, Object> toReturn = new HashMap<>();
-        toReturn.put("components", components);
-        toReturn.put("status", "DOWN");
 
         when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
+        when(httpResponse.statusCode()).thenReturn(200);
         Map<String, Object> retrievedReturn = privateService.getDownstreamsStatus();
 
-        assertThat(toReturn).isEqualTo(retrievedReturn);
+        assertThat(retrievedReturn.get("status")).isEqualTo("UP");
+    }
+
+    @Test
+    public void whenGetDownstreamsStatusCalledWith500DownstreamResponse_shouldReturnDOWNStatus() {
+        HttpResponse httpResponse = mock(HttpResponse.class);
+
+        when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
+        when(httpResponse.statusCode()).thenReturn(500);
+        Map<String, Object> retrievedReturn = privateService.getDownstreamsStatus();
+
+        assertThat(retrievedReturn.get("status")).isEqualTo("DOWN");
     }
 }
