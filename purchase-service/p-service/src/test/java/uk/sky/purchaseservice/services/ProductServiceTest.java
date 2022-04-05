@@ -31,7 +31,7 @@ public class ProductServiceTest {
         int stock = 18;
         String body = "{\"stock\":20}";
         Product product = new Product("1234", 2);
-        HttpResponse httpResponse = mock(HttpResponse.class);
+        HttpResponse<String> httpResponse = mock(HttpResponse.class);
 
         when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
         when(httpResponse.body()).thenReturn(body);

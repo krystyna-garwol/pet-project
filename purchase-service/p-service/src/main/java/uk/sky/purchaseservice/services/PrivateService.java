@@ -24,7 +24,6 @@ public class PrivateService {
     public Map<String, Object> getDownstreamsStatus() {
         Map<String, Object> toReturn = new HashMap<>();
         Map<String, String> components = new HashMap<>();
-        String statusToReturn = "";
 
         downstreamList.getUrls().forEach(downstream-> {
             HttpResponse<String> httpResponse = client.sendGetRequest(downstream.getUrl(), "private/status");
@@ -32,10 +31,7 @@ public class PrivateService {
             components.put(downstream.getName(), status);
         });
 
-        for (String value : components.values()) {
-            statusToReturn = value.equals(HealthStatus.UP.name()) ? HealthStatus.UP.name() : HealthStatus.DOWN.name();
-        }
-
+        String statusToReturn = components.values().contains(HealthStatus.DOWN.name()) ? HealthStatus.DOWN.name() : HealthStatus.UP.name();
         toReturn.put("components", components);
         toReturn.put("status", statusToReturn);
 

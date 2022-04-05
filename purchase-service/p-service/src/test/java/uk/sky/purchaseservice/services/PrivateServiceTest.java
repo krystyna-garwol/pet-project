@@ -28,7 +28,7 @@ public class PrivateServiceTest {
 
     @Test
     public void whenGetDownstreamsStatusCalledWith200DownstreamResponse_shouldReturnUPStatus() {
-        HttpResponse httpResponse = mock(HttpResponse.class);
+        HttpResponse<String> httpResponse = mock(HttpResponse.class);
 
         when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
         when(httpResponse.statusCode()).thenReturn(200);
@@ -39,10 +39,21 @@ public class PrivateServiceTest {
 
     @Test
     public void whenGetDownstreamsStatusCalledWith500DownstreamResponse_shouldReturnDOWNStatus() {
-        HttpResponse httpResponse = mock(HttpResponse.class);
+        HttpResponse<String> httpResponse = mock(HttpResponse.class);
 
         when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
         when(httpResponse.statusCode()).thenReturn(500);
+        Map<String, Object> retrievedReturn = privateService.getDownstreamsStatus();
+
+        assertThat(retrievedReturn.get("status")).isEqualTo("DOWN");
+    }
+
+    @Test
+    public void whenGetDownstreamsStatusCalledWith500And200DownstreamResponse_shouldReturnDOWNStatus() {
+        HttpResponse<String> httpResponse = mock(HttpResponse.class);
+
+        when(client.sendGetRequest(anyString(), anyString())).thenReturn(httpResponse);
+        when(httpResponse.statusCode()).thenReturn(500, 200);
         Map<String, Object> retrievedReturn = privateService.getDownstreamsStatus();
 
         assertThat(retrievedReturn.get("status")).isEqualTo("DOWN");
