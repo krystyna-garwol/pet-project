@@ -9,5 +9,4 @@ include 'order-service:o-wiremock'
 include 'purchase-service:p-service'
 include 'purchase-service:p-functional'
 include 'purchase-service:p-wiremock'
-include 'inventory-service:untitled'
 
